@@ -168,6 +168,7 @@ For production, add the deployed URL to each field as well.
 
 ## Gotchas
 
+- **SPA clients must have `token_endpoint_auth_method` set to `none`.** When creating an Auth0 application for a single-page app, explicitly set `token_endpoint_auth_method` to `none`. SPAs are public clients and cannot securely store a client secret — if this is not set to `none`, token exchange will fail.
 - **Two separate Auth0 packages exist.** Use `@auth0/auth0-react` for SPAs, not `auth0-js` or `@auth0/nextjs-auth0` (which is for server-side Next.js).
 - **Allowed Web Origins must be set** in the Auth0 Dashboard or silent token renewal will fail silently.
 - **Never hardcode Auth0 credentials.** Always use environment variables. Add `.env` and `.env.local` to `.gitignore`.

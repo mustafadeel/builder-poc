@@ -109,6 +109,7 @@ if [ -z "$APP_ID" ]; then
   APP_ID=$(auth0 apps create \
     --name "$APP_NAME" \
     --type spa \
+    --auth-method none \
     --callbacks "http://localhost:3000,http://localhost:5173" \
     --logout-urls "http://localhost:3000,http://localhost:5173" \
     --origins "http://localhost:3000,http://localhost:5173" \
@@ -198,6 +199,7 @@ if ([string]::IsNullOrEmpty($appId)) {
   $appName = Split-Path -Leaf (Get-Location)
   Write-Host "Creating new Auth0 SPA application..."
   $appJson = auth0 apps create --name "$appName-react-app" --type spa `
+    --auth-method none `
     --callbacks "http://localhost:3000,http://localhost:5173" `
     --logout-urls "http://localhost:3000,http://localhost:5173" `
     --origins "http://localhost:3000,http://localhost:5173" `
@@ -292,13 +294,14 @@ If you prefer using the Auth0 Dashboard instead of the CLI:
 4. Choose:
    - Name: Your app name
    - Type: **Single Page Web Applications**
-5. Configure:
+5. Under **Settings** → **Credentials**, set **Authentication Method** to **None** (`token_endpoint_auth_method: none`). This is required for SPA clients since they are public clients and cannot store a client secret.
+6. Configure:
    - **Allowed Callback URLs**: `http://localhost:3000, http://localhost:5173`
    - **Allowed Logout URLs**: `http://localhost:3000, http://localhost:5173`
    - **Allowed Web Origins**: `http://localhost:3000, http://localhost:5173`
    - **Allowed Origins (CORS)**: `http://localhost:3000, http://localhost:5173`
-6. Copy your **Domain** and **Client ID**
-7. Create `.env` file as shown in Step 4 above
+7. Copy your **Domain** and **Client ID**
+8. Create `.env` file as shown in Step 4 above
 
 ---
 
