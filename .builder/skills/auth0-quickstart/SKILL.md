@@ -149,13 +149,18 @@ const callApi = async () => {
 
 ### Update Auth0 application callback URLs
 
-**Before asking the user to test the application**, you MUST update the Auth0 application's URL settings to match the app's dev server URL (e.g., `http://localhost:5173` for Vite, `http://localhost:3000` for Next.js). Determine the correct URL from the project's dev server configuration.
+**Before asking the user to test the application**, you MUST update the Auth0 application's URL settings to match the **actual running preview/dev server URL**.
 
-Update all three URL fields on the Auth0 application:
+**Do NOT assume `localhost`.** The app preview URL is often dynamically generated (e.g., a cloud preview URL, a tunneled URL, or a non-standard port). You must determine the real URL by:
+1. Reading the dev server output after starting the app to find the actual URL it is serving on.
+2. Checking for any preview URL provided by the hosting/preview environment.
+3. Only falling back to `localhost` if the dev server output explicitly confirms it is serving on localhost.
 
-- **Allowed Callback URLs:** the dev server URL (e.g., `http://localhost:5173`)
-- **Allowed Logout URLs:** the dev server URL
-- **Allowed Web Origins:** the dev server URL (required for silent authentication)
+Update all three URL fields on the Auth0 application to match the actual URL:
+
+- **Allowed Callback URLs:** the actual app URL
+- **Allowed Logout URLs:** the actual app URL
+- **Allowed Web Origins:** the actual app URL (required for silent authentication)
 
 These must be set on the Auth0 application or login/logout will fail with a callback mismatch error. Do not rely on the user to configure this manually — update it programmatically using the connected Auth0 integration (e.g., Auth0 MCP server) before proceeding to test.
 
@@ -166,7 +171,7 @@ For production, add the deployed URL to each field as well.
 - **Two separate Auth0 packages exist.** Use `@auth0/auth0-react` for SPAs, not `auth0-js` or `@auth0/nextjs-auth0` (which is for server-side Next.js).
 - **Allowed Web Origins must be set** in the Auth0 Dashboard or silent token renewal will fail silently.
 - **Never hardcode Auth0 credentials.** Always use environment variables. Add `.env` and `.env.local` to `.gitignore`.
-- **`redirect_uri` must match exactly** what is configured in Auth0 Dashboard Allowed Callback URLs, including protocol, port, and trailing slashes.
+- **`redirect_uri` must match exactly** what is configured in Auth0 Allowed Callback URLs, including protocol, host, port, and trailing slashes. Do not assume localhost — use the actual preview/dev server URL.
 - **`isLoading` must be checked** before reading `isAuthenticated` or `user` to avoid rendering unauthenticated UI during initialization.
 - **For Next.js App Router**, wrap the Auth0Provider in a client component (`"use client"` directive) since it uses React context.
 

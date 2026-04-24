@@ -109,7 +109,7 @@ export function LoginButton() {
 
 ### 5. Update Auth0 Callback URLs and Test
 
-**Before testing**, update the Auth0 application's Allowed Callback URLs, Allowed Logout URLs, and Allowed Web Origins to match the dev server URL (e.g., `http://localhost:5173` for Vite, `http://localhost:3000` for CRA). Do this programmatically via the connected Auth0 integration — see the `auth0-quickstart` skill for full instructions. Do not ask the user to do this manually.
+**Before testing**, update the Auth0 application's Allowed Callback URLs, Allowed Logout URLs, and Allowed Web Origins to match the **actual running preview/dev server URL**. Do NOT assume `localhost` — the preview URL is often dynamically generated. Start the dev server first, read the URL from its output, then update the Auth0 application programmatically via the connected Auth0 integration. See the `auth0-quickstart` skill for full instructions. Do not ask the user to configure this manually.
 
 Then start the dev server and test the login flow:
 
@@ -133,7 +133,7 @@ npm start    # CRA
 
 | Mistake | Fix |
 |---------|-----|
-| Forgot to add redirect URI in Auth0 Dashboard | Add your application URL (e.g., `http://localhost:3000`, `https://app.example.com`) to Allowed Callback URLs in Auth0 Dashboard |
+| Forgot to add redirect URI in Auth0 Dashboard | Add the **actual app preview/dev server URL** to Allowed Callback URLs — do not assume localhost, read the URL from the dev server output |
 | Using wrong env var prefix | Vite uses `VITE_` prefix, Create React App uses `REACT_APP_` |
 | Not handling loading state | Always check `isLoading` before rendering auth-dependent UI |
 | Storing tokens in localStorage | Never manually store tokens - SDK handles secure storage automatically |
